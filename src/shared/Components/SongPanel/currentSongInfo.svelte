@@ -3,9 +3,9 @@
     import LikeSongButton from "../likeSongButton.svelte";
     import AddToPlaylistButton from "../addToPlaylistButton.svelte";
 
-    let currentSong =$derived(songState.songs[songState.currentSongId]);
+    let currentSong = $derived(songState.songs[songState.currentSongIndex])!;
 
-
+    console.log(currentSong);
 </script>
 <div class="songInfoContainer">
     <img class="image" src="../{currentSong.cover}" alt="">

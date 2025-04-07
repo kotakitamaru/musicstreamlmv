@@ -8,16 +8,16 @@ export interface Song {
     cover: string;
     src: string;
     single: boolean;
+    duration : number;
 }
 
 
 export interface SongStore {
     songs: Song[];
-    currentSongId: number;
-    currentSong: () => Song;
+    currentSongIndex: number;
 }
 
-export const initialSongs: Song[] = $state([
+export const initialSongs: Song[] = [
     {
         id: 1,
         title: "Безслідно",
@@ -89,17 +89,16 @@ export const initialSongs: Song[] = $state([
         duration: 185
     },
 
-]);
+];
 
 export const songState = $state<SongStore>({
     songs: initialSongs,
-    currentSongId: 1,
-    currentSong : () : Song => songState.songs[songState.currentSongId],
+    currentSongIndex: 1,
 });
 
 
 export const setCurrentSong = (index: number) => {
-    songState.currentSongId = index;
+    songState.currentSongIndex = index;
     if (audioState.audio) {
         audioState.audio.load();
         if (audioState.isPlaying) {
@@ -109,8 +108,8 @@ export const setCurrentSong = (index: number) => {
 };
 
 export const setQueue = (queue: Song[], index: number = 0, play: boolean = true) => {
-    songState.currentSongId = index;
     songState.songs = queue;
+    songState.currentSongIndex = index;
     if (audioState.audio) {
         audioState.audio.load();
         if(play) {
@@ -122,7 +121,7 @@ export const setQueue = (queue: Song[], index: number = 0, play: boolean = true)
 
 // Function to go to the next song
 export const nextSong = () => {
-    songState.currentSongId = (songState.currentSongId + 1) % songState.songs.length
+    songState.currentSongIndex = (songState.currentSongIndex + 1) % songState.songs.length
     if (audioState.audio) {
         audioState.audio.load();
             audioState.audio.play();
@@ -132,7 +131,7 @@ export const nextSong = () => {
 
 // Function to go to the previous song
 export const prevSong = () => {
-    songState.currentSongId = (songState.currentSongId - 1 + songState.songs.length) % songState.songs.length
+    songState.currentSongIndex = (songState.currentSongIndex - 1 + songState.songs.length) % songState.songs.length
     if (audioState.audio) {
         audioState.audio.load();
         audioState.audio.play();

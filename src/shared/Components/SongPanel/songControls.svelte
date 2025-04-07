@@ -6,7 +6,7 @@
     import {songState} from "../../../stores/songsState.svelte.js";
     import {onMount} from "svelte";
 
-    let currentSongScr = $derived(songState.songs[songState.currentSongId].src)
+    let currentSongScr = $derived(songState.songs[songState.currentSongIndex]!.src)
 
 
     let audioElement: HTMLAudioElement | null = null;

@@ -8,7 +8,7 @@ import {page} from "$app/state";
 import {allPlaylists} from "../../stores/playlistState.svelte";
 
 let {Index, Song, onSongClick} = $props()
-let isPlaying = $derived(songState.currentSong().id === Song.id);
+let isPlaying = $derived(songState.songs[songState.currentSongIndex].id === Song.id);
 let isInPlaylist = $derived(allPlaylists.find(x => String(x.id) === page.params.id)?.songs.some(x => x.id === Song.id));
 </script>
 

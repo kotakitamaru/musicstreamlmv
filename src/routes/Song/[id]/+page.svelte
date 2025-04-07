@@ -1,29 +1,27 @@
 <script lang="ts">
-
-    import IconButton from "../../../shared/Components/iconButton.svelte";
-    import icons from "../../../shared/icons.js";
     import { page } from "$app/state";
-    import {setCurrentSong, setQueue, songState} from "../../../stores/songsState.svelte.js";
+    import {initialSongs, setQueue, songState} from "../../../stores/songsState.svelte.js";
     import {audioState, togglePlay} from "../../../stores/audioState.svelte";
-    import {isLiked, like} from "../../../stores/playlistState.svelte";
     import LikeSongButton from "../../../shared/Components/likeSongButton.svelte";
     import AddToPlaylistButton from "../../../shared/Components/addToPlaylistButton.svelte";
 
-    let currentSong = $derived(songState.songs.find(x => x.id === Number(page.params.id))!);
+    let currentSong = $derived(initialSongs.find(x => x.id === Number(page.params.id))!);
+    let playingSong = $derived(songState.songs[songState.currentSongIndex]);
 
     const onSongClickHandle = () => {
-        console.log(currentSong.id === songState.currentSongId)
-        if(currentSong.id === songState.currentSongId)
+        console.log('current', currentSong)
+        console.log('playing', playingSong)
+        if(currentSong.id === playingSong.id)
             togglePlay()
         else
-            setQueue([currentSong], currentSong.id);
+            setQueue([currentSong], 0);
     }
 </script>
 <div class="flex flex-col justify-center items-center pt-10">
     <div>
         <button class="song-container" onclick={onSongClickHandle}>
             <img class="songPreview" src="../{currentSong.cover}" alt="song cover">
-            <span class="play-button">{audioState.isPlaying && currentSong.id === songState.currentSongId? "⏸︎" : "▶"}</span>
+            <span class="play-button">{audioState.isPlaying && currentSong.id === playingSong.id? "⏸︎" : "▶"}</span>
         </button>
     <div class="w-full">
         <h1 class="songTitle">{currentSong.title}</h1>

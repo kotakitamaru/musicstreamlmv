@@ -42,7 +42,9 @@
                 <h1 class="title">{currentPlaylist.name}</h1>
                 <h1 class="subtitle">{currentPlaylist.username}</h1>
                 <span class="absolute right-3.5 bottom-3.5">
-                   <IconButton onClick={onPlaylistClickHandle} icon={icons.Play}/>
+                    {#if songs.length > 0}
+                    <IconButton onClick={onPlaylistClickHandle} icon={icons.Play}/>
+                    {/if}
                 </span>
             </div>
         </div>
