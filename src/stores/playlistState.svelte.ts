@@ -13,7 +13,7 @@ export interface Playlist{
 export const favourites = $state<Playlist>({
     id: 0,
     name: "Favourites",
-    cover: "src/covers/favourites.jpg",
+    cover: "covers/favourites.jpg",
     songs: songState.songs.slice(0,4),
     username: "username"
 })
@@ -77,14 +77,14 @@ export const allPlaylists = $state<Playlist[]>([
     {
         id: 1,
         name: "Chill songs",
-        cover: "src/covers/Vinyl.jpg",
+        cover: "covers/Vinyl.jpg",
         songs: songState.songs.slice(4, 8),
         username: "username"
     },
     {
         id: 2,
         name: "Gaming playlist",
-        cover: "src/covers/kitten.jpg",
+        cover: "covers/kitten.jpg",
         songs: [],
         username: "username"
     },

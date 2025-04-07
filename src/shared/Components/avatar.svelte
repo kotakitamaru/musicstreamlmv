@@ -1,6 +1,6 @@
 
 <button >
-    <img class="avatar" src="src/covers/avatar.jpg">
+    <img class="avatar" src="../../../static/covers/avatar.jpg">
 </button>
 
 
