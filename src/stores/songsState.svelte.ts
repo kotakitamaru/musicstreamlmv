@@ -1,0 +1,142 @@
+import {type AudioStateSvelte, audioState} from "./audioState.svelte";
+
+export interface Song {
+    id: number;
+    title: string;
+    artist: string;
+    album: string;
+    cover: string;
+    src: string;
+    single: boolean;
+}
+
+
+export interface SongStore {
+    songs: Song[];
+    currentSongId: number;
+    currentSong: () => Song;
+}
+
+export const initialSongs: Song[] = $state([
+    {
+        id: 1,
+        title: "Безслідно",
+        artist: "Mistmorn",
+        album: "Нудьга",
+        cover: "src/covers/Нудьга.jpg",
+        src: "src/songs/Безслідно.mp3",
+        single: false,
+        duration: 80
+    },
+    {
+        id: 2,
+        title: "Божевілля вдвох",
+        artist: "Mistmorn",
+        album: "Single",
+        cover: "src/covers/Божевілля вдвох.jpg",
+        src: "src/songs/Божевілля двох.mp3",
+        single: true,
+        duration: 193
+    },
+    {
+        id: 3,
+        title: "Дідько, я у розпачі...",
+        artist: "Mistmorn",
+        album: "Single",
+        cover: "src/covers/Дідько я у розпачі.jpg",
+        src: "src/songs/дідько, я у розпачі....mp3",
+        single: true,
+        duration: 212
+    },
+    {
+        id: 4,
+        title: "Затишок",
+        artist: "Mistmorn",
+        album: "Нудьга",
+        cover: "src/covers/Нудьга.jpg",
+        src: "src/songs/Затишок.mp3",
+        single: false,
+        duration: 202
+    },
+    {
+        id: 5,
+        title: "Між мною та зоряним небом",
+        artist: "Mistmorn",
+        album: "Нудьга",
+        cover: "src/covers/Нудьга.jpg",
+        src: "src/songs/Між мною та зоряним небом.mp3",
+        single: false,
+        duration: 133
+    },
+    {
+        id: 6,
+        title: "Прохолода",
+        artist: "Mistmorn",
+        album: "Нудьга",
+        cover: "src/covers/Нудьга.jpg",
+        src: "src/songs/Прохолода [prod. faithful_dex].mp3",
+        single: false,
+        duration: 114
+    },
+    {
+        id: 0,
+        title: "Сподіваюсь, з тобою все гаразд",
+        artist: "Mistmorn",
+        album: "Single",
+        cover: "src/covers/Сподіваюсь, з тобою все гаразд.jpg",
+        src: "src/songs/Сподіваюсь, з тобою все гаразд.mp3",
+        single: true,
+        duration: 185
+    },
+
+]);
+
+export const songState = $state<SongStore>({
+    songs: initialSongs,
+    currentSongId: 1,
+    currentSong : () : Song => songState.songs[songState.currentSongId],
+});
+
+
+export const setCurrentSong = (index: number) => {
+    songState.currentSongId = index;
+    if (audioState.audio) {
+        audioState.audio.load();
+        if (audioState.isPlaying) {
+            audioState.audio.play();
+        }
+    }
+};
+
+export const setQueue = (queue: Song[], index: number = 0, play: boolean = true) => {
+    songState.currentSongId = index;
+    songState.songs = queue;
+    if (audioState.audio) {
+        audioState.audio.load();
+        if(play) {
+            audioState.audio.play();
+            audioState.isPlaying = true;
+        }
+    }
+};
+
+// Function to go to the next song
+export const nextSong = () => {
+    songState.currentSongId = (songState.currentSongId + 1) % songState.songs.length
+    if (audioState.audio) {
+        audioState.audio.load();
+            audioState.audio.play();
+            audioState.isPlaying = true;
+    }
+};
+
+// Function to go to the previous song
+export const prevSong = () => {
+    songState.currentSongId = (songState.currentSongId - 1 + songState.songs.length) % songState.songs.length
+    if (audioState.audio) {
+        audioState.audio.load();
+        audioState.audio.play();
+        audioState.isPlaying = true;
+    }
+}
+
